@@ -1,172 +1,140 @@
 # Intelligent Prompt Generator
 
-A DOS-style command-line tool that generates high-quality, optimized prompts using the Ultimate LLM Prompt Engineering Guide principles.
+A modern web-based intelligent prompt generator with split-screen UI. Generate optimized prompts using advanced AI techniques powered by OpenAI's GPT models.
 
 ## Features
 
-- **Interactive DOS-style Interface** - Classic menu-driven navigation
-- **Intelligent Technique Selection** - Automatically chooses optimal prompt engineering techniques
-- **Model-Specific Optimization** - Tailored for GPT-4, Claude-3, and other models
-- **Professional Output** - Complete documentation packages with usage instructions
-- **Quality Assessment** - Built-in scoring and improvement recommendations
-- **Domain Expertise** - Specialized optimization for healthcare, legal, finance, and more
+- **Split-Screen Interface**: Configuration form on the left, generated prompt on the right
+- **Intelligent Technique Selection**: Automatically chooses optimal prompt engineering techniques
+- **15+ Prompt Engineering Techniques**: Zero-shot, few-shot, chain-of-thought, role-based, and more
+- **Real-Time Validation**: Form validation with immediate feedback
+- **Quality Assessment**: Built-in scoring and improvement recommendations
+- **Copy & Download**: Easy prompt copying and file download functionality
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
 
-## Quick Start
+## Technology Stack
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: TailwindCSS + Headless UI
+- **State Management**: Zustand + React Hook Form
+- **API Integration**: OpenAI JavaScript SDK
+- **Testing**: Vitest + React Testing Library + Playwright
+- **Deployment**: Vercel
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- OpenAI API key
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/featherdye/intelligent-prompt-generator.git
+   cd intelligent-prompt-generator
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Usage
+
+1. Enter your OpenAI API key in the secure input field
+2. Fill out the configuration form:
+   - Describe your task or goal
+   - Select target AI model
+   - Choose domain and complexity level
+   - Add any specific requirements
+3. Click "Generate Prompt" to create your optimized prompt
+4. Copy or download the generated prompt for use
+
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run test` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+
+### Testing
+
+The project follows Test-Driven Development (TDD):
 
 ```bash
-python prompt_generator.py
+# Run unit tests
+npm run test
+
+# Run E2E tests
+npm run test:e2e
+
+# Run all tests
+npm run test && npm run test:e2e
 ```
 
-Follow the interactive menus to specify your requirements, and the system will generate a comprehensive prompt package.
-
-## System Architecture
+### Project Structure
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│  DOS Interface  │────│  Requirements    │────│  Technique      │
-│  Menu System    │    │  Collector       │    │  Selector       │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│  LLM Prompt     │────│  Output          │────│  Quality        │
-│  Generator      │    │  Generator       │    │  Assessor       │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+src/
+├── components/          # React components
+│   ├── PromptForm/     # Configuration form
+│   ├── PromptDisplay/  # Generated prompt display
+│   ├── ApiKeyInput/    # Secure API key input
+│   └── ...
+├── lib/                # Core business logic
+│   ├── technique-selector/  # Prompt engineering logic
+│   ├── openai-client/      # API integration
+│   ├── prompt-config/      # Form validation
+│   └── store/              # State management
+├── types/              # TypeScript definitions
+└── styles/             # CSS and styling
 ```
 
-## Generated Output
+## Deployment
 
-Each prompt package includes:
+The app is configured for deployment on Vercel:
 
-- **Optimized Prompt** - Ready-to-use, technique-enhanced prompt
-- **Model Configuration** - Recommended settings (temperature, max tokens, etc.)
-- **Usage Instructions** - Implementation guidelines and best practices  
-- **Quality Assessment** - Scoring and improvement recommendations
-- **Test Cases** - Validation scenarios and expected outputs
-- **Technique Explanation** - Why specific techniques were selected
+1. Connect your GitHub repository to Vercel
+2. Vercel will automatically detect the configuration
+3. Deploy with zero configuration required
 
-## Supported Techniques
+## Security
 
-The system intelligently selects from 15+ prompt engineering techniques:
-
-### Core Techniques
-- Zero-Shot Prompting
-- Few-Shot Prompting  
-- Chain-of-Thought Reasoning
-- Self-Consistency
-
-### Advanced Techniques
-- Retrieval Augmented Generation
-- ReAct (Reasoning and Acting)
-- Meta-Prompting
-- Generate Knowledge
-
-### Optimization Techniques
-- Structured Output Formatting
-- Role-Based Prompting
-- Domain-Specific Expertise
-- Model-Specific Adaptations
-- Safety Constraints
-- Quality Controls
-
-## Requirements Collection
-
-The system collects comprehensive requirements through an intuitive menu system:
-
-### Basic Information
-- Task Type (9 options from classification to creative)
-- Target Model (6 major models supported)
-- Domain (9 specialized domains)
-- Complexity Level (4 levels from simple to expert)
-
-### Advanced Configuration
-- Target Audience (beginner to expert)
-- Output Format (structured, JSON, markdown, etc.)
-- Creativity Level (conservative to highly creative)
-- Safety Requirements (standard to critical)
-- Specific Requirements (free-form input)
-
-## File Structure
-
-```
-├── prompt_generator.py      # Main application with DOS interface
-├── technique_selector.py    # Intelligent technique selection engine
-├── llm_generator.py        # Prompt generation using templates/LLM
-├── output_generator.py     # Professional documentation generator
-└── README.md               # This file
-```
-
-## Example Output
-
-```markdown
-# Analysis Prompt - Healthcare Domain
-
-**Generated**: 2024-12-15 14:30:22
-**Quality Score**: 9.2/10 ⭐⭐⭐⭐⭐
-**Target Model**: GPT-4
-
-## 🎯 Optimized Prompt
-
-You are a senior medical analyst with 15+ years of clinical experience...
-[Complete optimized prompt with integrated techniques]
-
-## 📋 Prompt Metadata
-| Attribute | Value |
-|-----------|-------|
-| Task Type | Analysis |
-| Domain | Healthcare |
-| Techniques | Chain-of-Thought, Structured Output, Domain Expertise |
-
-[Continues with full documentation...]
-```
-
-## Requirements
-
-- Python 3.7+
-- Optional: OpenAI API key for AI-enhanced generation
-- Install: `pip install openai` (for full AI capabilities)
-
-### Setup for AI Generation
-```bash
-pip install openai
-export OPENAI_API_KEY="your-key-here"  
-```
-
-**Note**: System works great without API key too! You'll get solid 8.0+ quality prompts using intelligent rule-based generation.
-
-## Advanced Usage
-
-### Batch Processing
-For multiple prompts, run the tool multiple times or modify for batch input.
-
-### API Integration  
-The system can be extended to use actual LLM APIs for meta-prompt generation by adding API keys.
-
-### Custom Domains
-Add new domains by extending the technique selector's domain mappings.
-
-## Quality Assurance
-
-All generated prompts include:
-- **Technique Validation** - Ensures selected techniques are appropriate
-- **Quality Scoring** - Multi-dimensional assessment (clarity, completeness, effectiveness)
-- **Test Cases** - Validation scenarios for prompt testing
-- **Improvement Suggestions** - Actionable recommendations for enhancement
+- API keys are stored client-side only (sessionStorage)
+- No server-side data persistence
+- Input validation and sanitization
+- Security headers configured
 
 ## Contributing
 
-This tool implements the Ultimate LLM Prompt Engineering Guide principles. To contribute:
-
-1. Review the guide for prompt engineering best practices
-2. Extend technique selection logic for new use cases
-3. Add new output formats or model optimizations
-4. Enhance quality assessment metrics
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Write tests for your changes
+4. Ensure all tests pass (`npm run test && npm run test:e2e`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
 ## License
 
-Open source - use and modify as needed for your prompt engineering projects.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
+## Acknowledgments
 
-*Generated prompts are ready for production use and demonstrate expert-level prompt engineering techniques.*
+- Built with the Specify framework for systematic feature development
+- Implements techniques from the Ultimate LLM Prompt Engineering Guide
+- Generated with [Claude Code](https://claude.ai/code)
