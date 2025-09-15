@@ -1,0 +1,224 @@
+openapi: 3.0.3
+info:
+  title: Prompt Generator OpenAI Integration
+  description: API contract for OpenAI integration in the web-based prompt generator
+  version: 1.0.0
+
+servers:
+  - url: https://api.openai.com/v1
+    description: OpenAI API
+
+paths:
+  /chat/completions:
+    post:
+      summary: Generate optimized prompt using OpenAI GPT
+      description: Send prompt configuration to OpenAI API and receive optimized prompt
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              prompt_generation:
+                summary: Prompt generation request
+                value:
+                  model: "gpt-4"
+                  messages:
+                    - role: "system"
+                      content: "You are an expert prompt engineer. Generate an optimized prompt based on the user's requirements."
+                    - role: "user"
+                      content: "Task: Write a product review\nModel: GPT-4\nDomain: E-commerce\nComplexity: Moderate\nRequirements: Focus on usability and value"
+                  temperature: 0.7
+                  max_tokens: 2000
+                  top_p: 1
+                  frequency_penalty: 0
+                  presence_penalty: 0
+      responses:
+        '200':
+          description: Successful prompt generation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+              examples:
+                successful_generation:
+                  summary: Successfully generated prompt
+                  value:
+                    id: "chatcmpl-123"
+                    object: "chat.completion"
+                    created: 1677652288
+                    model: "gpt-4"
+                    choices:
+                      - index: 0
+                        message:
+                          role: "assistant"
+                          content: "**Optimized Prompt for Product Review Generation**\n\nYou are a knowledgeable product reviewer with expertise in evaluating consumer goods..."
+                        finish_reason: "stop"
+                    usage:
+                      prompt_tokens: 150
+                      completion_tokens: 500
+                      total_tokens: 650
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Bearer token with OpenAI API key
+
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          enum: ["gpt-4", "gpt-3.5-turbo"]
+          description: The model to use for completion
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: List of messages for the chat completion
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+          default: 0.7
+          description: Controls randomness in the response
+        max_tokens:
+          type: integer
+          minimum: 1
+          maximum: 4000
+          description: Maximum tokens to generate
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+          default: 1
+          description: Nucleus sampling parameter
+        frequency_penalty:
+          type: number
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: Penalty for frequent tokens
+        presence_penalty:
+          type: number
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: Penalty for new tokens
+
+    Message:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum: ["system", "user", "assistant"]
+          description: The role of the message sender
+        content:
+          type: string
+          description: The content of the message
+
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the completion
+        object:
+          type: string
+          enum: ["chat.completion"]
+          description: Object type
+        created:
+          type: integer
+          description: Unix timestamp of creation
+        model:
+          type: string
+          description: Model used for the completion
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Choice'
+          description: List of completion choices
+        usage:
+          $ref: '#/components/schemas/Usage'
+
+    Choice:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: Index of the choice
+        message:
+          $ref: '#/components/schemas/Message'
+        finish_reason:
+          type: string
+          enum: ["stop", "length", "content_filter"]
+          description: Reason the completion finished
+
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+          description: Number of tokens in the prompt
+        completion_tokens:
+          type: integer
+          description: Number of tokens in the completion
+        total_tokens:
+          type: integer
+          description: Total number of tokens used
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Error message
+            type:
+              type: string
+              description: Error type
+            param:
+              type: string
+              description: Parameter that caused the error (if applicable)
+            code:
+              type: string
+              description: Error code (if applicable)

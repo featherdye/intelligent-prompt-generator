@@ -1,0 +1,358 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://prompt-generator.vercel.app/schemas/prompt-generation",
+  "title": "Prompt Generation Contract",
+  "description": "Schema definitions for prompt generation requests and responses",
+
+  "definitions": {
+    "PromptConfiguration": {
+      "type": "object",
+      "title": "Prompt Configuration",
+      "description": "User input configuration for prompt generation",
+      "required": [
+        "taskDescription",
+        "targetModel",
+        "domain",
+        "complexityLevel",
+        "outputFormat",
+        "creativityLevel"
+      ],
+      "properties": {
+        "taskDescription": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000,
+          "description": "Free-form description of the task or goal",
+          "examples": [
+            "Write a product review for a smartphone",
+            "Analyze customer feedback data for sentiment",
+            "Generate creative story ideas for a sci-fi novel"
+          ]
+        },
+        "targetModel": {
+          "type": "string",
+          "enum": [
+            "gpt-4",
+            "gpt-3.5-turbo",
+            "claude-3",
+            "claude-sonnet",
+            "gemini-pro",
+            "custom"
+          ],
+          "description": "Target AI model for the prompt"
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "general",
+            "healthcare",
+            "legal",
+            "finance",
+            "education",
+            "creative",
+            "technical",
+            "research",
+            "other"
+          ],
+          "description": "Domain context for specialized optimization"
+        },
+        "complexityLevel": {
+          "type": "string",
+          "enum": ["simple", "moderate", "complex", "expert"],
+          "description": "Complexity level of the task"
+        },
+        "specificRequirements": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Additional context, constraints, or requirements"
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "structured",
+            "conversational",
+            "json",
+            "markdown",
+            "custom"
+          ],
+          "description": "Desired output format from the AI"
+        },
+        "creativityLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Creativity vs precision balance (1=precise, 10=creative)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "GeneratedPrompt": {
+      "type": "object",
+      "title": "Generated Prompt Response",
+      "description": "Complete generated prompt with metadata and analysis",
+      "required": [
+        "id",
+        "content",
+        "metadata",
+        "quality",
+        "techniques",
+        "generatedAt",
+        "model",
+        "configuration"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9-_]+$",
+          "description": "Unique identifier for this generated prompt"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 50,
+          "description": "The optimized prompt text"
+        },
+        "metadata": {
+          "$ref": "#/definitions/PromptMetadata"
+        },
+        "quality": {
+          "$ref": "#/definitions/QualityAssessment"
+        },
+        "techniques": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TechniqueSelection"
+          },
+          "minItems": 1,
+          "description": "Applied prompt engineering techniques"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of generation"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model used for generation"
+        },
+        "configuration": {
+          "$ref": "#/definitions/PromptConfiguration"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "PromptMetadata": {
+      "type": "object",
+      "title": "Prompt Metadata",
+      "description": "Additional information about the generated prompt",
+      "required": [
+        "wordCount",
+        "estimatedTokens",
+        "readabilityScore",
+        "completenessScore"
+      ],
+      "properties": {
+        "wordCount": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total word count in the prompt"
+        },
+        "estimatedTokens": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Approximate token count for target model"
+        },
+        "readabilityScore": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Clarity and readability score"
+        },
+        "completenessScore": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "How well it covers requirements"
+        },
+        "usageInstructions": {
+          "type": "string",
+          "description": "How to use this prompt effectively"
+        },
+        "testScenarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Suggested test cases for validation"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TechniqueSelection": {
+      "type": "object",
+      "title": "Applied Technique",
+      "description": "A prompt engineering technique applied to the prompt",
+      "required": [
+        "technique",
+        "reason",
+        "implementation",
+        "confidence"
+      ],
+      "properties": {
+        "technique": {
+          "type": "string",
+          "enum": [
+            "zero_shot",
+            "few_shot",
+            "chain_of_thought",
+            "self_consistency",
+            "generate_knowledge",
+            "retrieval_augmented",
+            "react",
+            "reflexion",
+            "meta_prompting",
+            "structured_output",
+            "role_based",
+            "safety_constraints",
+            "domain_expertise",
+            "model_specific",
+            "creative_stimulus"
+          ],
+          "description": "The specific technique used"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Why this technique was selected"
+        },
+        "implementation": {
+          "type": "string",
+          "minLength": 10,
+          "description": "How it was implemented in the prompt"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence in technique selection (0-1)"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "QualityAssessment": {
+      "type": "object",
+      "title": "Quality Assessment",
+      "description": "Comprehensive quality evaluation of the generated prompt",
+      "required": [
+        "overallScore",
+        "clarity",
+        "completeness",
+        "effectiveness",
+        "specificity"
+      ],
+      "properties": {
+        "overallScore": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Combined quality score"
+        },
+        "clarity": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "How clear and unambiguous the prompt is"
+        },
+        "completeness": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "How well it addresses all requirements"
+        },
+        "effectiveness": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Predicted effectiveness for the task"
+        },
+        "specificity": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Level of detail and precision"
+        },
+        "feedback": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specific improvement suggestions"
+        },
+        "strengths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Identified strong points"
+        },
+        "weaknesses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Areas for improvement"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ErrorResponse": {
+      "type": "object",
+      "title": "Error Response",
+      "description": "Standardized error response format",
+      "required": [
+        "error",
+        "message",
+        "code"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": [
+            "validation_error",
+            "api_error",
+            "rate_limit_error",
+            "authentication_error",
+            "generation_error",
+            "network_error"
+          ],
+          "description": "Error type"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message"
+        },
+        "code": {
+          "type": "string",
+          "description": "Machine-readable error code"
+        },
+        "details": {
+          "type": "object",
+          "description": "Additional error context"
+        },
+        "retryable": {
+          "type": "boolean",
+          "description": "Whether the operation can be retried"
+        },
+        "retryAfter": {
+          "type": "integer",
+          "description": "Seconds to wait before retry (if retryable)"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
