@@ -1,6 +1,6 @@
 # Intelligent Prompt Generator
 
-A modern web-based intelligent prompt generator with split-screen UI. Generate optimized prompts using advanced AI techniques powered by OpenAI's GPT models.
+A modern web-based intelligent prompt generator with split-screen UI. Generate optimized prompts using advanced AI techniques powered by multiple AI models through OpenRouter.
 
 ## Features
 
@@ -17,7 +17,7 @@ A modern web-based intelligent prompt generator with split-screen UI. Generate o
 - **Frontend**: React 18 + TypeScript + Vite
 - **Styling**: TailwindCSS + Headless UI
 - **State Management**: Zustand + React Hook Form
-- **API Integration**: OpenAI JavaScript SDK
+- **API Integration**: OpenRouter with multiple AI models
 - **Testing**: Vitest + React Testing Library + Playwright
 - **Deployment**: Vercel
 
@@ -26,7 +26,7 @@ A modern web-based intelligent prompt generator with split-screen UI. Generate o
 ### Prerequisites
 
 - Node.js 18+ and npm
-- OpenAI API key
+- OpenRouter API key
 
 ### Installation
 
@@ -50,7 +50,7 @@ A modern web-based intelligent prompt generator with split-screen UI. Generate o
 
 ### Usage
 
-1. Enter your OpenAI API key in the secure input field
+1. Enter your OpenRouter API key in the secure input field
 2. Fill out the configuration form:
    - Describe your task or goal
    - Select target AI model

@@ -1,42 +1,123 @@
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+  IconButton,
+  HStack,
+  Button,
+  Badge,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { ViewIcon, ViewOffIcon, SettingsIcon } from '@chakra-ui/icons'
+import PromptConfigurationForm from './components/PromptConfigurationForm'
+import PromptDisplay from './components/PromptDisplay'
+import PromptHistoryPanel from './components/PromptHistoryPanel'
+import ApiKeyModal from './components/ApiKeyModal'
+import { usePromptStore } from './store/promptStore'
 
 function App() {
+  const { isHistoryPanelVisible, setHistoryPanelVisible, hasApiKey } = usePromptStore()
+  const { isOpen: isApiKeyModalOpen, onOpen: onApiKeyModalOpen, onClose: onApiKeyModalClose } = useDisclosure()
+
+  const bg = useColorModeValue('gray.50', 'gray.900')
+  const headerBg = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Intelligent Prompt Generator
-          </h1>
-          <p className="text-lg text-gray-600">
-            Generate optimized prompts with advanced AI techniques
-          </p>
-        </header>
+    <Box minH="100vh" bg={bg}>
+      {/* Header */}
+      <Box
+        bg={headerBg}
+        borderBottom="1px"
+        borderColor={borderColor}
+        shadow="sm"
+      >
+        <Container maxW="full" px={6}>
+          <Flex justify="space-between" align="center" py={4}>
+            <HStack spacing={4}>
+              <IconButton
+                size="sm"
+                variant="ghost"
+                icon={isHistoryPanelVisible ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setHistoryPanelVisible(!isHistoryPanelVisible)}
+                aria-label="Toggle history panel"
+              />
+              <Heading size="lg" color={useColorModeValue('gray.900', 'white')}>
+                Intelligent Prompt Generator
+              </Heading>
+            </HStack>
+            <HStack spacing={3}>
+              <Button
+                size="sm"
+                variant="outline"
+                leftIcon={<SettingsIcon />}
+                onClick={onApiKeyModalOpen}
+                colorScheme={hasApiKey() ? 'green' : 'red'}
+              >
+                {hasApiKey() ? 'API Key Set' : 'Set API Key'}
+                {hasApiKey() && <Badge ml={2} colorScheme="green" fontSize="xs">●</Badge>}
+              </Button>
+              <Text
+                fontSize="sm"
+                color={useColorModeValue('gray.500', 'gray.400')}
+              >
+                Powered by OpenRouter
+              </Text>
+            </HStack>
+          </Flex>
+        </Container>
+      </Box>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Left Panel - Configuration Form */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Configure Your Prompt
-            </h2>
-            <div className="space-y-4">
-              <p className="text-gray-600">Configuration form will go here...</p>
-            </div>
-          </div>
+      {/* Main 3-Panel Layout */}
+      <Flex h="calc(100vh - 80px)">
+        {/* Left Panel - History (optional) */}
+        {isHistoryPanelVisible && <PromptHistoryPanel />}
 
-          {/* Right Panel - Generated Prompt Display */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        {/* Middle Panel - Configuration Form */}
+        <Box
+          flex={isHistoryPanelVisible ? "0 0 400px" : "0 0 50%"}
+          borderRight="1px"
+          borderColor={borderColor}
+          bg={useColorModeValue('white', 'gray.800')}
+          overflowY="auto"
+        >
+          <Box p={6}>
+            <Heading
+              size="md"
+              mb={4}
+              color={useColorModeValue('gray.900', 'white')}
+            >
+              Prompt Configuration
+            </Heading>
+            <PromptConfigurationForm />
+          </Box>
+        </Box>
+
+        {/* Right Panel - Prompt Display */}
+        <Box
+          flex={1}
+          bg={useColorModeValue('gray.50', 'gray.900')}
+          overflowY="auto"
+        >
+          <Box p={6}>
+            <Heading
+              size="md"
+              mb={4}
+              color={useColorModeValue('gray.900', 'white')}
+            >
               Generated Prompt
-            </h2>
-            <div className="bg-gray-50 rounded-lg p-4 min-h-[400px]">
-              <p className="text-gray-500 italic">
-                Your optimized prompt will appear here...
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Heading>
+            <PromptDisplay />
+          </Box>
+        </Box>
+      </Flex>
+
+      {/* API Key Modal */}
+      <ApiKeyModal isOpen={isApiKeyModalOpen} onClose={onApiKeyModalClose} />
+    </Box>
   )
 }
 
