@@ -7,7 +7,12 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
-    allowedHosts: 'all',
+    allowedHosts: [
+      'intelligent-prompt-generator-production.up.railway.app',
+      'localhost',
+      '127.0.0.1',
+      '.railway.app'
+    ],
   },
   build: {
     outDir: 'dist',
@@ -26,6 +31,11 @@ export default defineConfig({
   preview: {
     port: 3000,
     host: true,
-    allowedHosts: 'all',
+    allowedHosts: [
+      'intelligent-prompt-generator-production.up.railway.app',
+      'localhost',
+      '127.0.0.1',
+      '.railway.app'
+    ],
   },
 })
